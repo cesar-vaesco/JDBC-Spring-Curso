@@ -30,6 +30,7 @@ public class JdbcConnections {
 			
 			/*
 			 * PreparedStatement esta clase permite preparar una sentencia sql 
+			 * los signos de interrogación permiten definir parametros
 			 * */
 			PreparedStatement statement = connection.prepareStatement("insert into person (name, last_name, nickname) values (?,?,?)");
 
@@ -42,9 +43,15 @@ public class JdbcConnections {
 			
 			System.out.println("Columnas impactadas: " + rows);
 			
-			/*Establece el parámetro designado en SQL*/
-			statement.executeUpdate();
+			statement.setString(1, "Vanessa");
+			statement.setString(2,"Cortez");
+			statement.setString(3, "@Vane");
 			
+			/*Establece el parámetro designado en SQL*/
+		     rows = statement.executeUpdate();
+			
+		     System.out.println("Columnas impactadas: " + rows);
+		     
 			/*
 			 * Libera la base de datos de este objeto Statement y los recursos JDBC inmediatamente en lugar 
 			 * de esperar a que esto suceda cuando se cierre automáticamente. 
