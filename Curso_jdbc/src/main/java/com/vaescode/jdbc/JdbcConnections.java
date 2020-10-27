@@ -1,9 +1,13 @@
 package com.vaescode.jdbc;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.h2.tools.RunScript;
 
 public class JdbcConnections {
 
@@ -17,12 +21,18 @@ public class JdbcConnections {
 			System.out.println("Conectando...");
 			Connection connection = DriverManager.getConnection("jdbc:h2:~/test");
 			System.out.println("Conectado..");
+			
+			System.out.println("Ejecutando script..");
+			RunScript.execute(connection, new FileReader("src/main/resources/squema.sql"));
+			System.out.println("Script ejecutado..");
+
 			System.out.println("Cierre de conexión...");
 			
 			connection.close();
 			System.out.println("Conexión cerrada!");
-		} catch (SQLException e) {
+			
+		} catch (SQLException  | FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 }
