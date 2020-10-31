@@ -45,8 +45,11 @@ public class JdbcConnections {
 			statement.setString(3, "@Vane");
 			
 			/*Establece el parámetro designado en SQL*/
-		     rows = statement.executeUpdate();
-			
+		    // rows = statement.executeUpdate();
+			 boolean execute = statement.execute();
+			 System.out.println("Es una inserción: " + (execute == false));
+			 rows = statement.getUpdateCount();
+			 
 		     System.out.println("Columnas impactadas: " + rows);
 		     statement.close();
 		     
@@ -55,7 +58,11 @@ public class JdbcConnections {
 		      *  */
 			 PreparedStatement statementQuery = connection.prepareStatement("SELECT * FROM person");
 
-			 ResultSet rs = statementQuery.executeQuery();
+			 boolean execute2 = statementQuery.execute();
+			 System.out.println("Is resultSet: " + (execute2));
+			 ResultSet rs = statementQuery.getResultSet();
+			 
+			 //ResultSet rs = statementQuery.executeQuery();
 			 
 			 while(rs.next()) {
 				 
