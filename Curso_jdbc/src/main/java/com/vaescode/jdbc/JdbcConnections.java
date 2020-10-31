@@ -14,9 +14,7 @@ public class JdbcConnections {
 
 	public static void main(String[] args) {
 
-		/*Conexión a base de datos enbebida en Memoria
-		 *H2 es un sistema administrador de bases de datos relacionales programado en Java. 
-		 *Puede ser incorporado en aplicaciones Java o ejecutarse de modo cliente-servidor. */
+		
 		
 		try {
 			System.out.println("Conectando...");
@@ -28,12 +26,10 @@ public class JdbcConnections {
 			System.out.println("Script ejecutado..");
 			
 			
-			/*
-			 * PreparedStatement esta clase permite preparar una sentencia sql 
-			 * los signos de interrogación permiten definir parametros
-			 * */
 			PreparedStatement statement = connection.prepareStatement("insert into person (name, last_name, nickname) values (?,?,?)");
 
+			
+			
 			/*Agregar atributos a la sentencia statement*/
 			statement.setString(1, "César");
 			statement.setString(2, "Vargas");
@@ -52,12 +48,23 @@ public class JdbcConnections {
 			
 		     System.out.println("Columnas impactadas: " + rows);
 		     
+		     /*Preparando la sentencia que va a permitir borra registro de la base de datos*/
+		     PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM person");
+		     
+		     /*Columnas impactadas con la sentencia deleteStatement*/
+		    int rowsDelete = deleteStatement.executeUpdate();
+		    
+		    System.out.println("Rows deleted: " + rowsDelete);
+		    
+		    
+		     
 			/*
 			 * Libera la base de datos de este objeto Statement y los recursos JDBC inmediatamente en lugar 
 			 * de esperar a que esto suceda cuando se cierre automáticamente. 
 			 * Por lo general, es una buena práctica liberar los recursos tan pronto como haya terminado 
 			 * con ellos para evitar inmovilizar los recursos de la base de datos.
 			 * */
+		    deleteStatement.close();
 			statement.close();
 			
 			System.out.println("Cierre de conexión...");
