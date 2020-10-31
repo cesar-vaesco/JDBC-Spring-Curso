@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.h2.tools.RunScript;
@@ -18,15 +19,15 @@ public class JdbcConnections {
 		
 		try {
 			System.out.println("Conectando...");
-			Connection connection = DriverManager.getConnection("jdbc:h2:~/test");
+			Connection  connection = DriverManager.getConnection("jdbc:h2:~/test");
 			System.out.println("Conectado..");
 			
 			System.out.println("Ejecutando script..");
-			RunScript.execute(connection, new FileReader("src/main/resources/squema.sql"));
+			RunScript.execute( connection, new FileReader("src/main/resources/squema.sql"));
 			System.out.println("Script ejecutado..");
 			
 			
-			PreparedStatement statement = connection.prepareStatement("insert into person (name, last_name, nickname) values (?,?,?)");
+			PreparedStatement statement =  connection.prepareStatement("insert into person (name, last_name, nickname) values (?,?,?)");
 
 			
 			
@@ -47,15 +48,29 @@ public class JdbcConnections {
 		     rows = statement.executeUpdate();
 			
 		     System.out.println("Columnas impactadas: " + rows);
+		     statement.close();
+		     
+		     /*Generando consulta con PreparedStatement
+		      *ResultSet va a permitir apuntar a las filas donde se encuentren los datos de la busqueda
+		      *  */
+			 PreparedStatement statementQuery = connection.prepareStatement("SELECT * FROM person");
+
+			 ResultSet rs = statementQuery.executeQuery();
+			 
+			 while(rs.next()) {
+				 
+				 System.out.printf("\nId[%d] \tName [%s] \tLastname [%s] \tNickName [%s]",
+						 			rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+			 }
+		     statementQuery.close();
 		     
 		     /*Preparando la sentencia que va a permitir borra registro de la base de datos*/
-		     PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM person");
+		     PreparedStatement deleteStatement =  connection.prepareStatement("DELETE FROM person");
 		     
 		     /*Columnas impactadas con la sentencia deleteStatement*/
 		    int rowsDelete = deleteStatement.executeUpdate();
 		    
-		    System.out.println("Rows deleted: " + rowsDelete);
-		    
+		    System.out.println("\nRows deleted: " + rowsDelete);
 		    
 		     
 			/*
@@ -69,7 +84,7 @@ public class JdbcConnections {
 			
 			System.out.println("Cierre de conexión...");
 			
-			connection.close();
+			 connection.close();
 			System.out.println("Conexión cerrada!");
 			
 		} catch (SQLException  | FileNotFoundException e) {
