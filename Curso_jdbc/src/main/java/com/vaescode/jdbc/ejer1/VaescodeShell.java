@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 public class VaescodeShell {
 
+	//Método que permite leer lo que se escribe en la línea de comnados / consola
 	public static String readCommand() throws IOException {
 		System.out.printf("\nvaesco->");
 		InputStreamReader isr = new InputStreamReader(System.in);
@@ -55,7 +56,6 @@ public class VaescodeShell {
 			}
 		}
 		connection.close();
-
 	}
 	
 	/**
