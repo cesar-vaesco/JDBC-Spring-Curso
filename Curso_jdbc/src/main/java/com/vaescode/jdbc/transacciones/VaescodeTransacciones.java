@@ -56,7 +56,7 @@ public class VaescodeTransacciones {
 
 			statement.executeUpdate();
 			
-			savepoint = connection.setSavepoint("vaescodeSavePonit");
+			//connection.releaseSavepoint(savepoint);
 			
 			statement.setString(1, "Gloria");
 			statement.setString(2, null);
