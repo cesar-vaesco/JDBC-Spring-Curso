@@ -17,7 +17,6 @@ public class VaescodeShell {
 		System.out.printf("\nvaesco->");
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
-
 		return br.readLine();
 	}
 
