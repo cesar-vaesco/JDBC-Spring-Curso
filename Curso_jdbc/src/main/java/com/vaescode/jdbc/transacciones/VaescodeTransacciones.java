@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 import org.h2.tools.RunScript;
 
@@ -35,6 +36,7 @@ public class VaescodeTransacciones {
 			RunScript.execute(connection, new FileReader("src/main/resources/squema.sql"));
 			//Configuración automatica desactivada
 			connection.setAutoCommit(false);
+			Savepoint savepoint = null;
 
 			try {
 				
@@ -44,11 +46,21 @@ public class VaescodeTransacciones {
 			statement.setString(3, "Chicharo");
 			//Ejecutar la declaración
 			statement.executeUpdate();
+			
+			savepoint = connection.setSavepoint("vaescodeSavePonit");
 
 			//statement.setString(1, null);
 			statement.setString(1, "Veronica");
 			statement.setString(2, "Cortez");
 			statement.setString(3, "Vitus");
+
+			statement.executeUpdate();
+			
+			savepoint = connection.setSavepoint("vaescodeSavePonit");
+			
+			statement.setString(1, "Gloria");
+			statement.setString(2, null);
+			statement.setString(3, "Glo-Glo");
 
 			statement.executeUpdate();
 			//Hace que todos los cambios realizados desde la confirmación / reversión anterior sean permanentes 
@@ -59,7 +71,12 @@ public class VaescodeTransacciones {
 				//Una operación de reversión deshace todos los cambios realizados por la transacción actual, es decir,
 				//si se llama a un método rollBack() de la interfaz Connection, todas las modificaciones se revierten 
 				//hasta la última confirmación
-				connection.rollback();
+				if (savepoint == null) {
+					connection.rollback();
+				}else {
+					connection.rollback(savepoint);
+				}
+				
 				System.out.println("Rolling back because " + e.getMessage());
 			}finally {
 				connection.setAutoCommit(true);
