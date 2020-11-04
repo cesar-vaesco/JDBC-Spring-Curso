@@ -36,6 +36,8 @@ public class VaescodeTransacciones {
 			//Configuración automatica desactivada
 			connection.setAutoCommit(false);
 
+			try {
+				
 			//Datos a persistir
 			statement.setString(1, "César");
 			statement.setString(2, "Vargas");
@@ -43,7 +45,8 @@ public class VaescodeTransacciones {
 			//Ejecutar la declaración
 			statement.executeUpdate();
 
-			statement.setString(1, "Verónica");
+			//statement.setString(1, null);
+			statement.setString(1, "Veronica");
 			statement.setString(2, "Cortez");
 			statement.setString(3, "Vitus");
 
@@ -51,6 +54,17 @@ public class VaescodeTransacciones {
 			//Hace que todos los cambios realizados desde la confirmación / reversión anterior sean permanentes 
 			//y libera los bloqueos de la base de datos que actualmente tiene este objeto de conexión.
 			connection.commit();
+			
+			}catch (SQLException e) {
+				//Una operación de reversión deshace todos los cambios realizados por la transacción actual, es decir,
+				//si se llama a un método rollBack() de la interfaz Connection, todas las modificaciones se revierten 
+				//hasta la última confirmación
+				connection.rollback();
+				System.out.println("Rolling back because " + e.getMessage());
+			}finally {
+				connection.setAutoCommit(true);
+			}
+			
 			System.out.println("Record persisted...");
 			//Prepara la declaración sql y la ejecuta
 			PreparedStatement result = connection.prepareStatement("SELECT * FROM person");
