@@ -27,11 +27,15 @@
 			<artifactId>HikariCP</artifactId>
 			<version>3.4.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
 	</dependencies>
 </project>
-<!-- * Agregando la versión de java al proyecto con dos propiedades: 
-- source caracteristicas el lenguaje, 
-- target clases compiladas compatibles con la JVM de la versión declarada 
-https://maven.apache.org/plugins/maven-compiler-plugin/examples/set-compiler-source-and-target.html 
-	****Para que los cambios se vean aplicados es necesario actualizar el proyecto con maven usando la opcion Maven / UpdateProyect 
--->
+<!-- * Agregando la versión de java al proyecto con dos propiedades: - source 
+	caracteristicas el lenguaje, - target clases compiladas compatibles con la 
+	JVM de la versión declarada https://maven.apache.org/plugins/maven-compiler-plugin/examples/set-compiler-source-and-target.html 
+	****Para que los cambios se vean aplicados es necesario actualizar el proyecto 
+	con maven usando la opcion Maven / UpdateProyect -->
