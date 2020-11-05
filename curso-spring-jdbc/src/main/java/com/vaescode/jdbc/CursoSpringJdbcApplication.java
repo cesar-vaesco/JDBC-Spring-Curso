@@ -1,5 +1,7 @@
 package com.vaescode.jdbc;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.vaescode.jdbc.mappers.EmployeeRowMapper;
+import com.vaescode.jdbc.models.Employee;
+
 @SpringBootApplication
 public class CursoSpringJdbcApplication implements ApplicationRunner {
 
@@ -17,15 +22,16 @@ public class CursoSpringJdbcApplication implements ApplicationRunner {
 	@Autowired
 	private JdbcTemplate template;
 
+	
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		Double maxSalary = template.queryForObject("select MAX(salary) from employee", Double.class);
-		log.info("Max Salary {}", maxSalary);
-		
-	int rows = template.update
-		    ("insert into address(street, number, postal_code, employee_id) values (?,?,?,?)", "Ruiz Cortines","108", 52045, 8);
-
-		log.info("Rows impacted {}", rows);
+	List<Employee>employees = template.query("select * from employee", new EmployeeRowMapper());
+	
+	for (Employee employee : employees) {
+		log.info("Id:{}, Name:{}, LastName:{}, Age:{}, Salary:{}", employee.getId(), employee.getName(), employee.getLastname(), employee.getAge(), employee.getSalary());
+	}
+    
 
 	}
 
