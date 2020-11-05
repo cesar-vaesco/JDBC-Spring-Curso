@@ -22,6 +22,11 @@
 			<artifactId>javafaker</artifactId>
 			<version>1.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>3.4.5</version>
+		</dependency>
 	</dependencies>
 </project>
 <!-- * Agregando la versión de java al proyecto con dos propiedades: 
