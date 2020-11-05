@@ -4,11 +4,12 @@ package com.vaescode.jdbc.datasource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class ExcerciseConnection {
 
-	private static final int NUM_CONNECTIONS = 1;
+	private static final int NUM_CONNECTIONS = 10;
 	/*
 	 * Velocidad de conexión     pool H2         PoolHikariCP        dbcp2            c3po
 	 *  usando DriverManager
@@ -25,25 +26,18 @@ public class ExcerciseConnection {
 	 * */
 	public static void main(String[] args) throws SQLException {
 		
-		//JdbcConnectionPool connectionPool = JdbcConnectionPool.create("jdbc:h2:~/test","","");
-		//HikariConfig config = new HikariConfig();
-		//config.setJdbcUrl("jdbc:h2:~/test");
-		//config.setUsername("");
-		//config.setPassword("");
-		//HikariDataSource connectionPoolHikari = new HikariDataSource(config);
-		//BasicDataSource dbcpDataSource = new BasicDataSource();
-		//dbcpDataSource.setUrl("jdbc:h2:~/test");
-		//dbcpDataSource.setUsername("");
-		//dbcpDataSource.setPassword("");
-		ComboPooledDataSource c3poConnectionPool = new ComboPooledDataSource();
-		c3poConnectionPool .setJdbcUrl("jdbc:h2:~/test");
-		c3poConnectionPool .setUser("");
-		c3poConnectionPool .setPassword("");
+		HikariConfig config = new HikariConfig();
+		config.setJdbcUrl("jdbc:h2:~/test");
+		config.setUsername("");
+		config.setPassword("");
+		
+		HikariDataSource connectionPoolHikari = new HikariDataSource(config);
+		
 		long startTime = System.currentTimeMillis();
 		
 		
 		for (int i = 1; i <= NUM_CONNECTIONS; i++) {
-			Connection connection =c3poConnectionPool.getConnection();
+			Connection connection =connectionPoolHikari.getConnection();
 
 			System.out.println(i);
 			connection.close();
@@ -51,6 +45,6 @@ public class ExcerciseConnection {
 		
 		System.out.println("Total time: "+ (System.currentTimeMillis() - startTime)  + "ms");
 		//Cerrando pool de conexiones
-		c3poConnectionPool .close();
+		connectionPoolHikari.close();
 	}
 }
